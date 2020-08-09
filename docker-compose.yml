@@ -1,0 +1,26 @@
+version: '3.4'
+networks: { intr: { external: true } }
+volumes:
+  wp_db_data: { driver: "local" }
+services:
+
+  wp:
+    image: wordpress
+    networks: [ "intr" ]
+    volumes:
+    - ./www:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: wp_db:3306
+      WORDPRESS_DB_PASSWORD: pass
+    ports: [ 8001:80 ]
+
+  wp_db:
+    image: mysql:5.7
+    networks: [ "intr" ]
+    volumes:
+     - wp_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
