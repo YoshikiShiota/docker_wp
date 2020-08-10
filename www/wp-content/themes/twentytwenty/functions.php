@@ -758,3 +758,32 @@ function twentytwenty_get_elements_array() {
 	*/
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
+
+// アイキャッチ画像を有効
+add_theme_support('post-thumbnails');   // カスタム投稿タイプ example で thumbnail を使うので追記
+
+// CPT 作成
+function create_post_type() {
+	$newsSupports = [  // supports のパラメータを設定する配列（初期値だと title と editor のみ投稿画面で使える）
+		'title',  // 記事タイトル
+		'editor',  // 記事本文
+		'thumbnail',  // アイキャッチ画像
+		'revisions'  // リビジョン
+	];
+	register_post_type( 'news',  // カスタム投稿名
+		[
+			'label'         => 'ニュース',  // 管理画面の左メニューに表示されるテキスト
+			'public'        => true,  // 投稿タイプをパブリックにするか否か
+			'has_archive'   => true,  // アーカイブを有効にするか否か
+			'menu_position' => 5,  // 管理画面上でどこに配置するか今回の場合は「投稿」の下に配置
+			'supports'      => $newsSupports  // 投稿画面でどのmoduleを使うか的な設定
+		]
+	);
+}
+add_action( 'init', 'create_post_type' ); // アクションに上記関数をフックします
+
+// WP REST API
+register_post_type('news', [
+	'show_in_rest' => true,
+	'rest_base'    => 'news',
+]);
