@@ -776,14 +776,10 @@ function create_post_type() {
 			'public'        => true,  // 投稿タイプをパブリックにするか否か
 			'has_archive'   => true,  // アーカイブを有効にするか否か
 			'menu_position' => 5,  // 管理画面上でどこに配置するか今回の場合は「投稿」の下に配置
-			'supports'      => $newsSupports  // 投稿画面でどのmoduleを使うか的な設定
+			'supports'      => $newsSupports,  // 投稿画面でどのmoduleを使うか的な設定
+			'show_in_rest'  => true,
+			'rest_base'     => 'news',
 		]
 	);
 }
 add_action( 'init', 'create_post_type' ); // アクションに上記関数をフックします
-
-// WP REST API
-register_post_type('news', [
-	'show_in_rest' => true,
-	'rest_base'    => 'news',
-]);
